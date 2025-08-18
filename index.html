@@ -45,12 +45,12 @@ function transactionSuccess(response, orderId) {
   } else console.log('Android is undefined')
 }
 
-  transactionSuccess('SUCCESS', '123456');
+  transactionSuccess('SUCCESS', new URLSearchParams(window.location.search).get('labs_order_id'));
   if (window.ReactNativeWebView) {
     document.getElementsByTagName('body')[0].innerHTML += `${Android} — ${window.ReactNativeWebView} — ${window.webkit} Sending ReactNativeWebView event`;
       window.ReactNativeWebView.postMessage((JSON.stringify({
           status: 'SUCCESS',
-          orderId: '123456',
+          orderId: new URLSearchParams(window.location.search).get('labs_order_id'),
         })));
   }
   if(window.webkit) {
@@ -61,13 +61,13 @@ function transactionSuccess(response, orderId) {
         document.getElementsByTagName('body')[0].innerHTML += `${window.webkit.messageHandlers} Sending webkit.messageHandlers event transactionSuccess`;
         window.webkit.messageHandlers.transactionSuccess.postMessage(JSON.stringify({
           status: 'SUCCESS',
-          orderId: '123456',
+          orderId: new URLSearchParams(window.location.search).get('labs_order_id'),
         }))
       } else if (window.webkit.messageHandlers.reactNative) {
         document.getElementsByTagName('body')[0].innerHTML += `${window.webkit.messageHandlers} Sending webkit.messageHandlers.reactNative event transactionSuccess`;
         window.webkit.messageHandlers.reactNative.postMessage(JSON.stringify({
           status: 'SUCCESS',
-          orderId: '123456',
+          orderId: new URLSearchParams(window.location.search).get('labs_order_id'),
         }));
       }
     }
