@@ -242,20 +242,20 @@
             const interval = 2000;
 
             function fireFailed(response) {
-              transactionFailure('FAILED', orderId);
+              transactionFailure('FAILURE', orderId);
               if (window.ReactNativeWebView) {
                 window.ReactNativeWebView.postMessage(
-                  JSON.stringify({ status: 'FAILED', orderId }),
+                  JSON.stringify({ status: 'FAILURE', orderId }),
                 );
               }
               if (window.webkit && window.webkit.messageHandlers) {
                 if (window.webkit.messageHandlers.transactionFailed) {
                   window.webkit.messageHandlers.transactionFailed.postMessage(
-                    JSON.stringify({ status: 'FAILED', orderId }),
+                    JSON.stringify({ status: 'FAILURE', orderId }),
                   );
                 } else if (window.webkit.messageHandlers.reactNative) {
                   window.webkit.messageHandlers.reactNative.postMessage(
-                    JSON.stringify({ status: 'FAILED', orderId }),
+                    JSON.stringify({ status: 'FAILURE', orderId }),
                   );
                 }
               }
