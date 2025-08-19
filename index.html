@@ -249,8 +249,8 @@
                 );
               }
               if (window.webkit && window.webkit.messageHandlers) {
-                if (window.webkit.messageHandlers.transactionFailed) {
-                  window.webkit.messageHandlers.transactionFailed.postMessage(
+                if (window.webkit.messageHandlers.transactionFailure) {
+                  window.webkit.messageHandlers.transactionFailure.postMessage(
                     JSON.stringify({ status: 'FAILURE', orderId }),
                   );
                 } else if (window.webkit.messageHandlers.reactNative) {
