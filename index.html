@@ -201,7 +201,7 @@
           gap: 6px;
         }
         body {
-          padding: 5px;
+            padding: 5px;
         }
         .title {
           font-size: 1.2rem;
@@ -227,12 +227,11 @@
         </header>
         <script>
           (function () {
-            function transactionFailure(response, orderId) {
+            function transactionSuccess(response, orderId) {
               if (typeof Android !== 'undefined') {
-                return Android.transactionFailure(response, orderId);
+                return Android.transactionSuccess(response, orderId);
               } else console.log('Android is undefined');
             }
-
             const orderId = new URLSearchParams(window.location.search).get(
               'labs_order_id',
             );
@@ -241,21 +240,21 @@
             const maxAttempts = 3;
             const interval = 2000;
 
-            function fireFailed(response) {
-              transactionFailure('FAILED', orderId);
+            function fireSuccess(response) {
+              transactionSuccess('SUCCESS', orderId);
               if (window.ReactNativeWebView) {
                 window.ReactNativeWebView.postMessage(
-                  JSON.stringify({ status: 'FAILED', orderId }),
+                  JSON.stringify({ status: 'SUCCESS', orderId }),
                 );
               }
               if (window.webkit && window.webkit.messageHandlers) {
-                if (window.webkit.messageHandlers.transactionFailed) {
-                  window.webkit.messageHandlers.transactionFailed.postMessage(
-                    JSON.stringify({ status: 'FAILED', orderId }),
+                if (window.webkit.messageHandlers.transactionSuccess) {
+                  window.webkit.messageHandlers.transactionSuccess.postMessage(
+                    JSON.stringify({ status: 'SUCCESS', orderId }),
                   );
                 } else if (window.webkit.messageHandlers.reactNative) {
                   window.webkit.messageHandlers.reactNative.postMessage(
-                    JSON.stringify({ status: 'FAILED', orderId }),
+                    JSON.stringify({ status: 'SUCCESS', orderId }),
                   );
                 }
               }
@@ -266,13 +265,13 @@
                 .then(res => res.json())
                 .then(data => {
                   if (data.status === 'PAYMENT_SUCCESS') {
-                    fireFailed(data);
+                    fireSuccess(data);
                   } else {
                     attempts++;
                     if (attempts < maxAttempts) {
                       setTimeout(pollStatus, interval);
                     } else {
-                      fireFailed(data);
+                      fireSuccess(data);
                     }
                   }
                 })
@@ -281,7 +280,7 @@
                   if (attempts < maxAttempts) {
                     setTimeout(pollStatus, interval);
                   } else {
-                    fireFailed();
+                    fireSuccess();
                   }
                 });
             }
